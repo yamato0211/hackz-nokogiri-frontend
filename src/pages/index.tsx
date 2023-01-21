@@ -25,8 +25,14 @@ export default function Home() {
         </Link>
 
         <Link href="/activities" passHref>
-          <Button variant="contained" style={{textTransform: 'none'}}>
+          <Button variant="contained" style={{textTransform: 'none', marginBottom:'30px'}}>
             Activities
+          </Button>
+        </Link>
+
+        <Link href="/home" passHref>
+          <Button variant="contained" style={{textTransform: 'none'}}>
+            go to home
           </Button>
         </Link>
 
