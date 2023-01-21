@@ -2,6 +2,7 @@ import Link from 'next/link'
 import styles from '../../styles/Home.module.css'
 import React from 'react';
 import { Button, Box, Collapse, Grid, ListItemIcon, ListItem, ListSubheader, Typography, ListItemButton, ListItemText, Stack, ListItemAvatar, List } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import {LocationOn, ExpandLess, ExpandMore} from '@mui/icons-material';
@@ -89,6 +90,10 @@ export default function Home() {
     });
   }
 
+  function HandleAddActivityButtonClick(){
+    alert('活動を追加');
+  }
+
   return (
     <div className={styles.container}>
       <CustomHead/>
@@ -110,7 +115,14 @@ export default function Home() {
           maxWidth: 500,
           bgcolor: 'background.paper'
         }}>
-          <h2>{rec.name}</h2>
+          <Grid container>
+            <Grid item xs={10} sx={{fontWeight:'bold',fontSize:20}}>
+              {rec.name}
+            </Grid>
+            <Grid item xs={2}>
+              <Button sx={{float:'right'}} onClick={HandleAddActivityButtonClick}><AddIcon/></Button>
+            </Grid>
+          </Grid>
           <List>{rec.activities.map((ac,i)=>(
             <React.Fragment key={i}>
               <ListItemButton onClick={()=>handleClick(i)}>
