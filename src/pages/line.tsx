@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import Router, { useRouter } from "next/router";
 import { Button } from '@mui/material'
+import { ClientURL, ServerURL } from '../refs'
 
 const Line = () => {
 
@@ -13,7 +14,7 @@ const Line = () => {
     var params = new URLSearchParams()
     params.append('grant_type', "authorization_code")
     params.append('code', route.query.code as string)
-    params.append('redirect_uri', "http://localhost:3000/line")
+    params.append('redirect_uri', ClientURL + "/line")
     params.append('client_id',  process.env.NEXT_PUBLIC_CLIENT_ID as string)
     params.append('client_secret', process.env.NEXT_PUBLIC_CLIENT_SECRET as string)
 
@@ -35,7 +36,7 @@ const Line = () => {
     const userdata = await axios.post("https://api.line.me/oauth2/v2.1/verify", params_second);
     console.log("userdata: ", userdata.data)
 
-    const response = await axios.post("http://localhost:8000/api/users/auth", {
+    const response = await axios.post(ServerURL + "/api/users/auth", {
       name: userdata.data.name,
       picture: userdata.data.picture,
       lineID: userdata.data.sub,
