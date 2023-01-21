@@ -36,7 +36,7 @@ const Line = () => {
     const userdata = await axios.post("https://api.line.me/oauth2/v2.1/verify", params_second);
     console.log("userdata: ", userdata.data)
 
-    const response = await axios.post(ServerURL + "/api/users/auth", {
+    const response = await axios.post(ServerURL + "/users/auth", {
       name: userdata.data.name,
       picture: userdata.data.picture,
       lineID: userdata.data.sub,
