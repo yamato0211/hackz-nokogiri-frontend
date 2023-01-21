@@ -15,7 +15,7 @@ interface UserData {
 }
 
 export default function Home() {
-  /*const url = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_CLIENT_ID as string}&redirect_uri=http://localhost:3000/line&state=hoge&bot_prompt=normal&scope=profile%20openid&nonce=foobar&prompt=consent`*/
+  
   const [userData, setUserData] = useState<UserData>()
   const [log, setMessage] = useState<string>("")
   const [url, setUrl] = useState<string>("")
