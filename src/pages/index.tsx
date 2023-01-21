@@ -16,8 +16,10 @@ interface UserData {
 }
 
 export default function Home() {
-  const url = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_CLIENT_ID as string}&redirect_uri=`+ClientURL+`/line&state=hoge&bot_prompt=normal&scope=profile%20openid&nonce=foobar&prompt=consent`
+
   const [userData, setUserData] = useState<UserData>()
+  const [log, setMessage] = useState<string>("")
+  const [url, setUrl] = useState<string>("")
   useEffect(() => {
     const getUserInfo = async () => {
       var params_second = new URLSearchParams()
@@ -36,8 +38,23 @@ export default function Home() {
         picture: userdata.data.picture,
         lineID: userdata.data.sub
       })
+
     }
     getUserInfo()
+    
+    if (typeof window !== 'undefined') {
+      const id = localStorage.getItem("id_token")
+      if(id != null && id.length != 0){
+          setMessage("logout")
+          setUrl("/home")
+
+        }else{
+          setMessage("login")
+          setUrl(`https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_CLIENT_ID as string}&redirect_uri=http://localhost:3000/line&state=hoge&bot_prompt=normal&scope=profile%20openid&nonce=foobar&prompt=consent`)
+      }
+    }else{
+      console.log("エラー2")
+    }
   },[])
 
   return (
@@ -50,12 +67,12 @@ export default function Home() {
           Main Page
         </h1>
 
-        <img src={userData?.picture ? userData.picture : ""} alt="" />
+        <img src={userData?.picture ? userData.picture : ""} style={{width:"100px", height:"100px", visibility:userData?.picture ? "visible" : "hidden"}}/>
         <a>{userData?.name}</a>
 
         <Link href={url}>
           <Button variant="contained" style={{textTransform: 'none', marginBottom:'30px'}}>
-            Login
+            {log}
           </Button>
         </Link>
 
@@ -64,16 +81,6 @@ export default function Home() {
             Activities
           </Button>
         </Link>
-
-        <Link href="/home" passHref>
-          <Button variant="contained" style={{textTransform: 'none'}}>
-            go to home
-          </Button>
-        </Link>
-
-        {/* <Button onClick={getUserInfo}>
-          console
-        </Button> */}
 
       </main>
 
