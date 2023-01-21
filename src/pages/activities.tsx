@@ -23,6 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
 interface RawData {
   name: string;
   activities: {
+    title: string;
     date: string;
     time: string;
     place: string;
@@ -31,15 +32,17 @@ interface RawData {
   }[]
 }
 
+export interface ActivityData {
+  title: string;
+  date: Date;
+  place: string;
+  members: string[];
+  misc: string;
+  open: boolean;
+}
 interface RecordData {
   name: string;
-  activities: {
-    date: Date;
-    place: string;
-    members: string[];
-    misc: string;
-    open: boolean;
-  }[]
+  activities: ActivityData[]
 }
 
 
@@ -51,6 +54,7 @@ export default function Home() {
     "name": "記録簿A",
     "activities": [
       {
+        "title": "部会",
         "date": "2023/01/21",
         "time": "13:39",
         "place": "部室",
@@ -58,6 +62,7 @@ export default function Home() {
         "misc": "適当なメモ"
       },
       {
+        "title": "部会",
         "date": "2024/01/01",
         "time": "23:59",
         "place": "講義室A",
@@ -83,6 +88,13 @@ export default function Home() {
   function HandleAddActivityButtonClick(){
     //alert('活動を追加');
     setAaModalOpen(b=>true);
+  }
+
+  function addActivity(ac:ActivityData){
+    setRec(rc=>{
+      rc.activities.push(ac);
+      return Object.assign({}, rc);
+    })
   }
 
   return (
@@ -117,7 +129,11 @@ export default function Home() {
             </Grid>
             <Grid item xs={2}>
               <Button sx={{float:'right'}} onClick={HandleAddActivityButtonClick}><AddIcon/></Button>
-              <AddActivityModal open={aaModalOpen} setOpen={setAaModalOpen as (a: Function) => void}/>
+              <AddActivityModal
+                open={aaModalOpen}
+                setOpen={setAaModalOpen as (a: Function) => void}
+                addActivity={addActivity}
+              />
             </Grid>
           </Grid>
           <List>{rec.activities.map((ac,i)=>(
@@ -125,24 +141,33 @@ export default function Home() {
               <ListItemButton onClick={()=>handleClick(i)}>
                 {ac.open?<ExpandLess/>:<ExpandMore/>}
                 <ListItemText
-                primary={ac.place}
+                sx={{
+                  maxWidth: 350,
+                }}
+                primary={ac.title}
                 secondary={ac.open?'':<Typography sx={{
                   overflow:'hidden',
                   whiteSpace:'nowrap',
                   textOverflow:'ellipsis',
                   color: 'text.secondary',
-                }}>{`メンバー：${ac.members.join(', ')}`}</Typography>}
+                }}>{`@${ac.place} メンバー(${ac.members.length})：${ac.members.join(', ')}`}</Typography>}
                 />
                 <ListItemText
-                primary={<Typography
                 sx={{
-                  display: 'inline',
-                  float: 'right'
+                  textAlign:'right',
+                  mr: 2,
+                }}
+                primary={<Typography
+                >{
+                  `${ac.date.getFullYear()}/${ac.date.getMonth()+1}/${ac.date.getDate()}`
+                }</Typography>}
+                secondary={<Typography
+                sx={{
+                  color: 'text.secondary'
                 }}
                 >{
-                  `${ac.date.getFullYear()}/${ac.date.getMonth()}/${ac.date.getDate()}`
-                  }</Typography>
-                }
+                  `${ac.date.getHours().toString().padStart(2,'0')}:${ac.date.getMinutes().toString().padStart(2,'0')}`
+                }</Typography>}
                 />
               </ListItemButton>
               <Collapse
@@ -155,7 +180,7 @@ export default function Home() {
                 <Stack>
                   <h4 style={{textAlign:'left'}}>メモ</h4>
                   <p style={{textAlign:'left'}}>{ac.misc}</p>
-                  <h4 style={{textAlign:'left'}}>メンバー</h4>
+                  <h4 style={{textAlign:'left'}}>{`メンバー(${ac.members.length})`}</h4>
                   <Grid container spacing={0.5}>
                     {ac.members.map((m,i)=>(
                       <Grid item xs={4} key={i}>
@@ -190,6 +215,7 @@ function LoadRecord(data: RawData): RecordData{
     dateStr = "2019/09/26 11:01:22";
 
     record.activities.push({
+      title: ac.title,
       date: new Date(dateStr),
       place: ac.place,
       members: ac.members,
