@@ -44,19 +44,15 @@ interface RecordData {
 
 export default function Home() {
     
-    const [actName, setActName] = useState(); 
-    const [actList, setActList] = useState(); 
+    const [record, setRecord] = useState(); 
     useEffect(() => {
         const data = async() => {
-            const res_name = await axios.get(ServerURL + "/record/7dfa8c70-f035-4e0f-8afb-722909fd8bcd")
-            setActName(await res_name.data)
-            console.log(actName)
-            const res_acts = await axios.get(ServerURL + "/activitie/record/7dfa8c70-f035-4e0f-8afb-722909fd8bcd")
-            setActList(await res_acts.data)
-            console.log(actList)
+            const response = await axios.get(ServerURL + "/record/7dfa8c70-f035-4e0f-8afb-722909fd8bcd")
+            setRecord(await response.data)
+            console.log(record)
         }
         data()
-    }, [actList, actName])
+    }, [record])
     
   // バックエンドから取得するデータ(仮)
   const data0_tmp: RawData = {
