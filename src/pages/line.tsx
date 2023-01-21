@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
+import Router, { useRouter } from "next/router";
+import { Button } from '@mui/material'
 
 const Line = () => {
 
@@ -41,12 +42,14 @@ const Line = () => {
     })
     const data = await response.data
     console.log(data)
+    console.log(id_token)
   }
 
   return (
-    <div>
-      <button onClick={getToken}>send message</button>
-    </div>
+  <Button variant="contained" href="/activities" onClick={getToken}>
+    login complete!
+  </Button>
+
   ) 
 }
 
