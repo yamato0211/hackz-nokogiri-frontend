@@ -5,13 +5,17 @@ import Router, { useRouter } from "next/router";
 
 export default function App({ Component, pageProps }: AppProps) {
 
+  const router = useRouter()
   useEffect(() => {
+    console.log(router.pathname)
     const id = localStorage.getItem("id_token");
     const access = localStorage.getItem("access_token");
-    if(id != null && id.length != 0){
-      //アクティビティページに飛ばす
-      Router.push("/activities");
-      console.log("id=" + id);
+    if(router.pathname !== "/"){
+      if(id != null && id.length != 0){
+        //アクティビティページに飛ばす
+        Router.push("/activities");
+        console.log("id=" + id);
+      }
     }
   },[])
 
