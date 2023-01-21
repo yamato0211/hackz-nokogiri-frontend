@@ -9,6 +9,7 @@ import {LocationOn, ExpandLess, ExpandMore} from '@mui/icons-material';
 
 import CustomHead from '../components/customhead'
 import CustomFooter from '../components/customfooter'
+import AddActivityModal from '../components/addactivitymodal';
 import { useEffect, useState } from 'react'
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -44,6 +45,7 @@ interface RecordData {
 
 
 export default function Home() {
+  const [aaModalOpen, setAaModalOpen] = useState(false);
   // バックエンドから取得するデータ(仮)
   const data0_tmp: RawData = {
     "name": "記録簿A",
@@ -79,7 +81,8 @@ export default function Home() {
   }
 
   function HandleAddActivityButtonClick(){
-    alert('活動を追加');
+    //alert('活動を追加');
+    setAaModalOpen(b=>true);
   }
 
   return (
@@ -105,6 +108,7 @@ export default function Home() {
         <Box sx={{
           width: '100%',
           maxWidth: 500,
+          margin: '0 auto',
           bgcolor: 'background.paper'
         }}>
           <Grid container>
@@ -113,6 +117,7 @@ export default function Home() {
             </Grid>
             <Grid item xs={2}>
               <Button sx={{float:'right'}} onClick={HandleAddActivityButtonClick}><AddIcon/></Button>
+              <AddActivityModal open={aaModalOpen} setOpen={setAaModalOpen as (a: Function) => void}/>
             </Grid>
           </Grid>
           <List>{rec.activities.map((ac,i)=>(
@@ -145,11 +150,12 @@ export default function Home() {
                 sx={{pl:4, pr:4}}
                 timeout="auto"
                 unmountOnExit
+                style={{textAlign:'center'}}
               >
-                <Stack style={{textAlign:'left'}}>
-                  <h4>メモ</h4>
-                  <p>{ac.misc}</p>
-                  <h4>メンバー</h4>
+                <Stack>
+                  <h4 style={{textAlign:'left'}}>メモ</h4>
+                  <p style={{textAlign:'left'}}>{ac.misc}</p>
+                  <h4 style={{textAlign:'left'}}>メンバー</h4>
                   <Grid container spacing={0.5}>
                     {ac.members.map((m,i)=>(
                       <Grid item xs={4} key={i}>
