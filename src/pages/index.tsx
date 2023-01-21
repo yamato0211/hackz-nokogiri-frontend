@@ -7,6 +7,7 @@ import { Button } from '@mui/material'
 import CustomHead from '../components/customhead'
 import CustomFooter from '../components/customfooter'
 import { useEffect, useState } from 'react';
+import { ClientURL } from '../refs';
 
 interface UserData {
   name: string
@@ -15,7 +16,7 @@ interface UserData {
 }
 
 export default function Home() {
-  const url = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_CLIENT_ID as string}&redirect_uri=http://localhost:3000/line&state=hoge&bot_prompt=normal&scope=profile%20openid&nonce=foobar&prompt=consent`
+  const url = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_CLIENT_ID as string}&redirect_uri=`+ClientURL+`/line&state=hoge&bot_prompt=normal&scope=profile%20openid&nonce=foobar&prompt=consent`
   const [userData, setUserData] = useState<UserData>()
   useEffect(() => {
     const getUserInfo = async () => {
