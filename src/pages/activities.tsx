@@ -9,6 +9,8 @@ import {LocationOn, ExpandLess, ExpandMore} from '@mui/icons-material';
 import CustomHead from '../components/customhead'
 import CustomFooter from '../components/customfooter'
 import { useEffect, useState } from 'react'
+import axios from 'axios';
+import { ServerURL } from '../refs';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -40,9 +42,22 @@ interface RecordData {
   }[]
 }
 
-
-
 export default function Home() {
+    
+    const [actName, setActName] = useState(); 
+    const [actList, setActList] = useState(); 
+    useEffect(() => {
+        const data = async() => {
+            const res_name = await axios.get(ServerURL + "/record/7dfa8c70-f035-4e0f-8afb-722909fd8bcd")
+            setActName(await res_name.data)
+            console.log(actName)
+            const res_acts = await axios.get(ServerURL + "/activitie/record/7dfa8c70-f035-4e0f-8afb-722909fd8bcd")
+            setActList(await res_acts.data)
+            console.log(actList)
+        }
+        data()
+    }, [actList, actName])
+    
   // バックエンドから取得するデータ(仮)
   const data0_tmp: RawData = {
     "name": "記録簿A",
