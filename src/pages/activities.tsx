@@ -98,7 +98,11 @@ export default function Home() {
     <div className={styles.container}>
       <CustomHead/>
       
-      <main className={styles.main}>
+      <main style={{
+        textAlign:'center',
+        padding: '4rem 0',
+        minHeight: '100vh'
+      }}>
 
         <h1 className={styles.title}>
           Activities
@@ -116,7 +120,7 @@ export default function Home() {
           bgcolor: 'background.paper'
         }}>
           <Grid container>
-            <Grid item xs={10} sx={{fontWeight:'bold',fontSize:20}}>
+            <Grid item xs={10} sx={{fontWeight:'bold',fontSize:20, textAlign:'left', float:'left'}}>
               {rec.name}
             </Grid>
             <Grid item xs={2}>
@@ -133,7 +137,7 @@ export default function Home() {
                   overflow:'hidden',
                   whiteSpace:'nowrap',
                   textOverflow:'ellipsis',
-                  color: 'text.secondary'
+                  color: 'text.secondary',
                 }}>{`メンバー：${ac.members.join(', ')}`}</Typography>}
                 />
                 <ListItemText
@@ -154,7 +158,7 @@ export default function Home() {
                 timeout="auto"
                 unmountOnExit
               >
-                <Stack>
+                <Stack style={{textAlign:'left'}}>
                   <h4>メモ</h4>
                   <p>{ac.misc}</p>
                   <h4>メンバー</h4>
