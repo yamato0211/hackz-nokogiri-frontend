@@ -44,6 +44,7 @@ interface RecordData {
 
 export default function Home() {
     
+    // バックエンドからデータ取得
     const [record, setRecord] = useState(); 
     useEffect(() => {
         const data = async() => {
