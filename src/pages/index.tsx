@@ -37,6 +37,7 @@ export default function Home() {
       })
     }
     getUserInfo()
+
   },[])
 
   return (
@@ -49,7 +50,7 @@ export default function Home() {
           Main Page
         </h1>
 
-        <img src={userData?.picture ? userData.picture : ""} alt="" />
+        <img src={userData?.picture ? userData.picture : ""} className={styles.img}/>
         <a>{userData?.name}</a>
 
         <Link href={url}>
@@ -64,9 +65,10 @@ export default function Home() {
           </Button>
         </Link>
 
+
         <Link href="/home" passHref>
           <Button variant="contained" style={{textTransform: 'none'}}>
-            go to home
+            log
           </Button>
         </Link>
 
