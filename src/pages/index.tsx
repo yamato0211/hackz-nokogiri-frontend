@@ -7,6 +7,7 @@ import { Button } from '@mui/material'
 import CustomHead from '../components/customhead'
 import CustomFooter from '../components/customfooter'
 import { useEffect, useState } from 'react';
+import { ClientURL } from '../refs';
 
 interface UserData {
   name: string
@@ -15,7 +16,7 @@ interface UserData {
 }
 
 export default function Home() {
-  
+
   const [userData, setUserData] = useState<UserData>()
   const [log, setMessage] = useState<string>("")
   const [url, setUrl] = useState<string>("")
