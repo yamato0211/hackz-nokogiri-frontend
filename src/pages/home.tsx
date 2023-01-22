@@ -25,18 +25,16 @@ export default function Home() {
         </h2>
 
         <Grid container style={{marginTop:'30px'}}>
-          <Grid item xs={3}></Grid>
+          <Grid item xs={5}></Grid>
 
-          <Grid item xs={2}>
+          <Grid item xs={1}>
             <Button variant="contained" href="/" onClick={logout} style={{textTransform: 'none', marginBottom:'30px', justifyItems:"center"}}>
               logout
             </Button>
           </Grid>
 
-          <Grid item xs={2}></Grid>
-
           <Grid item xs={2}>
-            <Button variant="contained" href="/" style={{justifyItems:"center"}}>
+            <Button variant="contained" href="/">
               no
             </Button>
           </Grid>
