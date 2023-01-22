@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Router, { useRouter } from "next/router";
 import { Button } from '@mui/material'
 import { ClientURL, ServerURL } from '../refs'
+import styles from '../../styles/Home.module.css'
 
 const Line = () => {
 
@@ -50,9 +51,17 @@ const Line = () => {
   }
 
   return (
-  <Button variant="contained" href="/activities" onClick={getToken}>
-    login complete!
-  </Button>
+    <main className={styles.main}>
+
+      <h1>
+        LOGIN COMPLETED!
+      </h1>
+
+      <Button variant="contained" href="/activities" onClick={getToken} style={{textTransform: 'none', width:'250px'}}>
+        return to home
+      </Button>
+
+    </main>
 
   ) 
 }
