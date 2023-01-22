@@ -64,7 +64,7 @@ export default function Home() {
       <main className={styles.main}>
 
         <h1 className={styles.title}>
-          Main Page
+          Welcome!
         </h1>
 
         <img src={userData?.picture ? userData.picture : ""} style={{width:"100px", height:"100px", visibility:userData?.picture ? "visible" : "hidden"}}/>
