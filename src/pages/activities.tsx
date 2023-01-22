@@ -77,15 +77,18 @@ export interface ActivityData {
   place: string;
   members: string[];
   misc: string;
+  recordId: string;
   open: boolean;
 }
 interface RecordData {
   name: string;
+  id: string;
   activities: ActivityData[]
 }
 
 const voidRecord: RecordData = {
   name: 'undefined',
+  id: 'undefined',
   activities: [{
     id: '123456789',
     title: 'undefined',
@@ -93,6 +96,7 @@ const voidRecord: RecordData = {
     place: 'undefined',
     members: ['undefined'],
     misc: 'undefined',
+    recordId: 'undefined',
     open: false,
   }]
 }
@@ -136,7 +140,15 @@ export default function Home() {
     setAaModalOpen(b=>true);
   }
 
-  function addActivity(ac:ActivityData){
+  async function addActivity(ac:ActivityData){
+    // Date => '2023-01-22T01:34:42.627Z'
+    const response = await axios.post(ServerURL + "/activitie", {
+      name: ac.title,
+      dateTime: ac.date.toISOString(),
+      place: ac.place,
+      misc: ac.misc,
+      recordId: ac.recordId,
+    })
     setRec(rc=>{
       if(!rc)return rc;
       rc.activities.push(ac);
@@ -178,6 +190,7 @@ export default function Home() {
               <Button sx={{float:'right'}} onClick={HandleAddActivityButtonClick}><AddIcon/></Button>
               <AddActivityModal
                 open={aaModalOpen}
+                recId={rec.id}
                 setOpen={setAaModalOpen as (a: Function) => void}
                 addActivity={addActivity}
               />
@@ -271,6 +284,7 @@ function LoadRecord(rr?: RawRecordData, ra?: RawActivitiesData): RecordData{
   let dateStr: string;
   let record: RecordData = {
     name: rr.name,
+    id: rr.id,
     activities: [],
   };
   ra.forEach(ac=>{
@@ -287,6 +301,7 @@ function LoadRecord(rr?: RawRecordData, ra?: RawActivitiesData): RecordData{
       place: ac.place,
       members: ac.member.map(m=>m.lineId),
       misc: ac.misc,
+      recordId: ac.recordId,
       open: false,
     });
   });

@@ -5,6 +5,7 @@ import { ActivityData } from "../pages/activities";
 export default function AddActivityModal(
   props: {
     open: boolean;
+    recId: string;
     setOpen: (a: Function) => void;
     addActivity: (a: ActivityData) => void;
   }
@@ -14,6 +15,7 @@ export default function AddActivityModal(
     date: new Date(),
     place: 'どこどこ',
     misc: '',
+    recordId: props.recId,
     members: [],
     open: false,
   };
