@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styles from '../../styles/Home.module.css'
 import React from 'react';
-import { Button, Box, Collapse, Grid, ListItemIcon, ListItem, ListSubheader, Typography, ListItemButton, ListItemText, Stack, ListItemAvatar, List } from '@mui/material'
+import { Button, Box, Collapse, Grid, ListItemIcon, ListItem, ListSubheader, Typography, ListItemButton, ListItemText, Stack, ListItemAvatar, List, Modal } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
@@ -21,6 +21,18 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
+
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 type RawActivitiesData = {
   Record: {
@@ -44,9 +56,9 @@ type RawActivitiesData = {
 
 interface RawRecordData {
   activities: {
+    id: string;
     createdAt: string;
     dateTime: string;
-    id: string;
     misc: string;
     name: string;
     place: string;
@@ -59,6 +71,7 @@ interface RawRecordData {
 }
 
 export interface ActivityData {
+  id: string;
   title: string;
   date: Date;
   place: string;
@@ -74,6 +87,7 @@ interface RecordData {
 const voidRecord: RecordData = {
   name: 'undefined',
   activities: [{
+    id: '123456789',
     title: 'undefined',
     date: new Date(),
     place: 'undefined',
@@ -85,6 +99,9 @@ const voidRecord: RecordData = {
 
 export default function Home() {
   const [aaModalOpen, setAaModalOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const [rec, setRec] = useState<RecordData>(voidRecord);
     
     // バックエンドからデータ取得
@@ -211,6 +228,23 @@ export default function Home() {
                   <h4 style={{textAlign:'left'}}>メモ</h4>
                   <p style={{textAlign:'left'}}>{ac.misc}</p>
                   <h4 style={{textAlign:'left'}}>{`メンバー(${ac.members.length})`}</h4>
+                  <Button onClick={handleOpen}>メンバーの招待<AddIcon/></Button>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography id="modal-modal-title" variant="h6" component="h2">
+                        メンバー招待用URL
+                      </Typography>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        以下のURLを参加させたいメンバーに共有してください<br />
+                        <a href={`http://localhost:3000/activity/${ac.id}`}>http://localhost:3000/activity/{ac.id}</a>
+                      </Typography>
+                    </Box>
+                  </Modal>
                   <Grid container spacing={0.5}>
                     {ac.members.map((m,i)=>(
                       <Grid item xs={4} key={i}>
@@ -247,6 +281,7 @@ function LoadRecord(rr?: RawRecordData, ra?: RawActivitiesData): RecordData{
     dateStr = ac.dateTime;
 
     record.activities.push({
+      id: ac.id,
       title: ac.name,
       date: new Date(dateStr),
       place: ac.place,

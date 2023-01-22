@@ -13,7 +13,7 @@ interface UserData {
   name: string
   picture: string | null
   lineID: string
-}
+} 
 
 export default function Home() {
 
@@ -67,11 +67,11 @@ export default function Home() {
           Welcome!
         </h1>
 
-        <img src={userData?.picture ? userData.picture : ""} style={{width:"100px", height:"100px", visibility:userData?.picture ? "visible" : "hidden"}}/>
+        <img src={userData?.picture ? userData.picture : "3088784.png"} style={{width:"100px", height:"100px"}}/>
         <a>{userData?.name}</a>
 
         <Link href="/activities" passHref>
-          <Button variant="contained" style={{textTransform: 'none', marginBottom:'30px', visibility:userData?.picture ? "visible" : "hidden"}}>
+          <Button variant="contained" style={{textTransform: 'none', marginBottom:'30px'}}>
             Activities
           </Button>
         </Link>

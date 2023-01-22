@@ -7,25 +7,36 @@ import styles from '../../styles/Home.module.css'
 
 const Line = () => {
 
-  const route = useRouter();
-
+  const router = useRouter();
+  
   const getToken = async () => {
 
     // アクセストークンの発行
     var params = new URLSearchParams()
     params.append('grant_type', "authorization_code")
-    params.append('code', route.query.code as string)
-    params.append('redirect_uri', ClientURL + "/line")
-    params.append('client_id',  process.env.NEXT_PUBLIC_CLIENT_ID as string)
+    params.append('code', router.query.code as string)
+    params.append('redirect_uri',"http://localhost:3000/line")
+    if(!process.env.NEXT_PUBLIC_CLIENT_ID){
+      console.log(4)
+      return
+    }
+    params.append('client_id',  process.env.NEXT_PUBLIC_CLIENT_ID)
+    if(!process.env.NEXT_PUBLIC_CLIENT_SECRET){
+      console.log(4)
+      return
+    }
     params.append('client_secret', process.env.NEXT_PUBLIC_CLIENT_SECRET as string)
-    console.log("=================")
-    console.log(process.env.NEXT_PUBLIC_CLIENT_SECRET)
-    console.log("=================")
-
-    const token = await axios.post("https://api.line.me/oauth2/v2.1/token", params);
-    console.log("token: ", token.data)
-    localStorage.setItem("id_token",token.data.id_token)
-    localStorage.setItem("access_token",token.data.access_token)
+    // console.log("=================")
+    // console.log(process.env.NEXT_PUBLIC_CLIENT_SECRET)
+    // console.log("=================")
+    try {
+      const token = await axios.post("https://api.line.me/oauth2/v2.1/token", params);
+      console.log("token: ", token.data)
+      localStorage.setItem("id_token",token.data.id_token)
+      localStorage.setItem("access_token",token.data.access_token)
+    }catch(e) {
+      console.log(e)
+    }
 
 
     // IDトークンの検証
@@ -48,6 +59,8 @@ const Line = () => {
     const data = await response.data
     console.log(data)
     console.log(id_token)
+
+    router.push('/activities')
   }
 
   return (
@@ -57,8 +70,8 @@ const Line = () => {
         LOGIN COMPLETED!
       </h1>
 
-      <Button variant="contained" href="/" onClick={getToken} style={{textTransform: 'none', width:'250px'}}>
-        Top Page
+      <Button variant="contained" onClick={getToken} style={{textTransform: 'none', width:'250px'}} type='button'>
+        return to home
       </Button>
 
     </main>
