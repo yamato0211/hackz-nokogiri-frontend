@@ -11,6 +11,7 @@ export default function AddActivityModal(
   }
 ) {
   const initActivity:ActivityData = {
+    id: '',
     title: '新しい活動',
     date: new Date(),
     place: 'どこどこ',
