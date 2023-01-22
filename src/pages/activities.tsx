@@ -12,7 +12,7 @@ import CustomFooter from '../components/customfooter'
 import AddActivityModal from '../components/addactivitymodal';
 import { useEffect, useState } from 'react'
 import axios from 'axios';
-import { ServerURL } from '../refs';
+import { RecordId, ServerURL } from '../refs';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -51,15 +51,19 @@ export default function Home() {
   const [aaModalOpen, setAaModalOpen] = useState(false);
     
     // バックエンドからデータ取得
-    const [record, setRecord] = useState(); 
+    const [record, setRecord] = useState({"name":""})
+    const [activities, setActivities] = useState([]); 
     useEffect(() => {
         const data = async() => {
-            const response = await axios.get(ServerURL + "/record/7dfa8c70-f035-4e0f-8afb-722909fd8bcd")
-            setRecord(await response.data)
+            const response1 = await axios.get(ServerURL + "/record/" + RecordId)
+            setRecord(await response1.data)
             console.log(record)
+            const response2 = await axios.get(ServerURL + "/activitie/record/" + RecordId)
+            setActivities(await response2.data)
+            console.log(activities)
         }
         data()
-    }, [record])
+    }, [record, activities])
     
   // バックエンドから取得するデータ(仮)
   const data0_tmp: RawData = {
