@@ -70,15 +70,15 @@ export default function Home() {
         <img src={userData?.picture ? userData.picture : ""} style={{width:"100px", height:"100px", visibility:userData?.picture ? "visible" : "hidden"}}/>
         <a>{userData?.name}</a>
 
-        <Link href={url}>
-          <Button variant="contained" style={{textTransform: 'none', marginBottom:'30px'}}>
-            {log}
+        <Link href="/activities" passHref>
+          <Button variant="contained" style={{textTransform: 'none', marginBottom:'30px', visibility:userData?.picture ? "visible" : "hidden"}}>
+            Activities
           </Button>
         </Link>
 
-        <Link href="/activities" passHref>
+        <Link href={url}>
           <Button variant="contained" style={{textTransform: 'none', marginBottom:'30px'}}>
-            Activities
+            {log}
           </Button>
         </Link>
 
