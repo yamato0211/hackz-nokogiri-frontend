@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }: AppProps) {
     console.log(router.pathname)
     const id = localStorage.getItem("id_token");
     const access = localStorage.getItem("access_token");
-    if(router.pathname !== "/"){
+    if(router.pathname !== "/line"){
       if(id != null && id.length != 0){
         //アクティビティページに飛ばす
         console.log("id=" + id);
@@ -18,6 +18,8 @@ export default function App({ Component, pageProps }: AppProps) {
         router.push('/')
       }
 
+    }else if(router.pathname === "/line" && id != null){
+      router.push("/activities")
     }
   },[])
 

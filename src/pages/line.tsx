@@ -15,7 +15,7 @@ const Line = () => {
     var params = new URLSearchParams()
     params.append('grant_type', "authorization_code")
     params.append('code', router.query.code as string)
-    params.append('redirect_uri',"http://localhost:3000/line")
+    params.append('redirect_uri', ClientURL + "/line")
     if(!process.env.NEXT_PUBLIC_CLIENT_ID){
       console.log(4)
       return
