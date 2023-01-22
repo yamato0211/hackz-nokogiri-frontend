@@ -57,8 +57,8 @@ const Line = () => {
         LOGIN COMPLETED!
       </h1>
 
-      <Button variant="contained" href="/activities" onClick={getToken} style={{textTransform: 'none', width:'250px'}}>
-        return to home
+      <Button variant="contained" href="/" onClick={getToken} style={{textTransform: 'none', width:'250px'}}>
+        Top Page
       </Button>
 
     </main>
