@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Router, { useRouter } from "next/router";
 import { Button } from '@mui/material'
 import { ClientURL, ServerURL } from '../refs'
+import styles from '../../styles/Home.module.css'
 
 const Line = () => {
 
@@ -17,6 +18,9 @@ const Line = () => {
     params.append('redirect_uri', ClientURL + "/line")
     params.append('client_id',  process.env.NEXT_PUBLIC_CLIENT_ID as string)
     params.append('client_secret', process.env.NEXT_PUBLIC_CLIENT_SECRET as string)
+    console.log("=================")
+    console.log(process.env.NEXT_PUBLIC_CLIENT_SECRET)
+    console.log("=================")
 
     const token = await axios.post("https://api.line.me/oauth2/v2.1/token", params);
     console.log("token: ", token.data)
@@ -47,9 +51,17 @@ const Line = () => {
   }
 
   return (
-  <Button variant="contained" href="/activities" onClick={getToken}>
-    login complete!
-  </Button>
+    <main className={styles.main}>
+
+      <h1>
+        LOGIN COMPLETED!
+      </h1>
+
+      <Button variant="contained" href="/" onClick={getToken} style={{textTransform: 'none', width:'250px'}}>
+        Top Page
+      </Button>
+
+    </main>
 
   ) 
 }

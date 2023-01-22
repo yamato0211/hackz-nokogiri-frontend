@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styles from '../../styles/Home.module.css'
 import response from './line'
 
-import { Button } from '@mui/material'
+import { Button, Grid } from '@mui/material'
 
 import CustomHead from '../components/customhead'
 import CustomFooter from '../components/customfooter'
@@ -20,13 +20,32 @@ export default function Home() {
 
       <main className={styles.main}>
 
-        <h1 className={styles.title}>
-          home Page
-        </h1>
+        <h2 className={styles.title}>
+          logout page
+        </h2>
 
-        <Button variant="contained" href="/" onClick={logout}>
-          logout
-        </Button>
+        <Grid container style={{marginTop:'30px'}}>
+          <Grid item xs={3}></Grid>
+
+          <Grid item xs={2}>
+            <Button variant="contained" href="/" onClick={logout} style={{textTransform: 'none', marginBottom:'30px', justifyItems:"center"}}>
+              logout
+            </Button>
+          </Grid>
+
+          <Grid item xs={2}></Grid>
+
+          <Grid item xs={2}>
+            <Button variant="contained" href="/" style={{justifyItems:"center"}}>
+              no
+            </Button>
+          </Grid>
+
+          <Grid item xs={3}></Grid>
+        </Grid>
+        <a>
+          You have to re-login if you put logout.
+        </a>
 
       </main>
 
