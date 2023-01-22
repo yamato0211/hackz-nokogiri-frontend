@@ -17,6 +17,9 @@ const Line = () => {
     params.append('redirect_uri', ClientURL + "/line")
     params.append('client_id',  process.env.NEXT_PUBLIC_CLIENT_ID as string)
     params.append('client_secret', process.env.NEXT_PUBLIC_CLIENT_SECRET as string)
+    console.log("=================")
+    console.log(process.env.NEXT_PUBLIC_CLIENT_SECRET)
+    console.log("=================")
 
     const token = await axios.post("https://api.line.me/oauth2/v2.1/token", params);
     console.log("token: ", token.data)
