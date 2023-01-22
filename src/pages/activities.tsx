@@ -22,16 +22,40 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-interface RawData {
+type RawActivitiesData = {
+  Record: {
+    id: string;
+    lineId: string;
+    name: string;
+  }
+  createdAt: string;
+  dateTime: string;
+  id: string;
+  member: {
+    activitieId: string;
+    lineId: string;
+  }[];
+  misc: string;
   name: string;
+  place: string;
+  recordId: string;
+  updatedAt: string;
+}[];
+
+interface RawRecordData {
   activities: {
-    title: string;
-    date: string;
-    time: string;
-    place: string;
-    members: string[];
+    createdAt: string;
+    dateTime: string;
+    id: string;
     misc: string;
-  }[]
+    name: string;
+    place: string;
+    recordId: string;
+    updatedAt: string;
+  }[];
+  id: string;
+  lineId: string;
+  name: string;
 }
 
 export interface ActivityData {
@@ -47,57 +71,46 @@ interface RecordData {
   activities: ActivityData[]
 }
 
+const voidRecord: RecordData = {
+  name: 'undefined',
+  activities: [{
+    title: 'undefined',
+    date: new Date(),
+    place: 'undefined',
+    members: ['undefined'],
+    misc: 'undefined',
+    open: false,
+  }]
+}
+
 export default function Home() {
   const [aaModalOpen, setAaModalOpen] = useState(false);
+  const [rec, setRec] = useState<RecordData>(voidRecord);
     
     // バックエンドからデータ取得
-    const [record, setRecord] = useState({"name":""})
-    const [activities, setActivities] = useState([]); 
+    const [rawRecord, setRawRecord] = useState<RawRecordData>()
+    const [rawActivities, setRawActivities] = useState<RawActivitiesData>(); 
     useEffect(() => {
-        const data = async() => {
-            const response1 = await axios.get(ServerURL + "/record/" + RecordId)
-            setRecord(await response1.data)
-            console.log(record)
-            const response2 = await axios.get(ServerURL + "/activitie/record/" + RecordId)
-            setActivities(await response2.data)
-            console.log(activities)
-        }
-        data()
-    }, [record, activities])
-    
-  // バックエンドから取得するデータ(仮)
-  const data0_tmp: RawData = {
-    "name": "記録簿A",
-    "activities": [
-      {
-        "title": "部会",
-        "date": "2023/01/21",
-        "time": "13:39",
-        "place": "部室",
-        "members": ['aaaaa','bbbbb','ccccc','ddddd','eeeee','fffff','ggggg'],
-        "misc": "適当なメモ"
-      },
-      {
-        "title": "部会",
-        "date": "2024/01/01",
-        "time": "23:59",
-        "place": "講義室A",
-        "members": ["ccc", "ddd"],
-        "misc": "メモメモメモ"
-      },
-    ],
-  }
+      (async() => {
+        const response1 = await axios.get(ServerURL + "/record/" + RecordId)
+        setRawRecord(await response1.data as RawRecordData)
+        console.log('<rawRecord>');
+        console.log(rawRecord);
+        const response2 = await axios.get(ServerURL + "/activitie/record/" + RecordId)
+        setRawActivities(await response2.data as RawActivitiesData)
+        console.log('<rawActivities>');
+        console.log(rawActivities);
+        // データの成形
+        setRec((()=>LoadRecord(rawRecord, rawActivities))());
+      })()
+    }, [rawRecord===undefined, rawActivities===undefined])
+    // }, [])
 
-  // データの成形
-  const [rec, setRec] = useState((()=>LoadRecord(data0_tmp))());
 
   function handleClick(i: number){
-    setRec(r=>{
+    setRec((r:RecordData)=>{
       r.activities[i].open = !r.activities[i].open;
-      return {
-        name: r.name,
-        activities: r.activities
-      };
+      return Object.assign({}, r);
     });
   }
 
@@ -108,6 +121,7 @@ export default function Home() {
 
   function addActivity(ac:ActivityData){
     setRec(rc=>{
+      if(!rc)return rc;
       rc.activities.push(ac);
       return Object.assign({}, rc);
     })
@@ -217,24 +231,26 @@ export default function Home() {
   )
 }
 
-function LoadRecord(data: RawData): RecordData{
+function LoadRecord(rr?: RawRecordData, ra?: RawActivitiesData): RecordData{
   // Dateコンストラクタに入れる文字列
+  if(!rr || !ra)return voidRecord;
   let dateStr: string;
   let record: RecordData = {
-    name: data.name,
+    name: rr.name,
     activities: [],
   };
-  data.activities.forEach(ac=>{
+  ra.forEach(ac=>{
 
     // TODO: dateStr設定
-    // dateStrフォーマット : 2019/09/26 11:01:22
-    dateStr = "2019/09/26 11:01:22";
+    // dateStrフォーマット(成功) : 2019/09/26 11:01:22
+    // dateStrフォーマット(現在) : 1970-01-01T00:00:00.000Z
+    dateStr = ac.dateTime;
 
     record.activities.push({
-      title: ac.title,
+      title: ac.name,
       date: new Date(dateStr),
       place: ac.place,
-      members: ac.members,
+      members: ac.member.map(m=>m.lineId),
       misc: ac.misc,
       open: false,
     });
